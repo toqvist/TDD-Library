@@ -4,10 +4,14 @@ import java.util.ArrayList;
 
 public class Library {
 
-    ArrayList<Book> books;
+    private ArrayList<Book> books = new ArrayList<Book>();
 
     public ArrayList<Book> getBooks() {
         return books;
     }
-    
+
+    public void addBook (Book book) {
+        books.add(book);
+    }
+
 }

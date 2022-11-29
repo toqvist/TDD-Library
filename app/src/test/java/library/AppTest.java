@@ -18,13 +18,13 @@ class AppTest {
 
     @Test void newBookHasTitle () {
         //getTitle should return string equal to given name
-        assertEquals(book.getTitle().getClass().getName(), "java.lang.String");
-        assertEquals(book.getTitle(), "Test book");
+        assertEquals("java.lang.String", book.getTitle().getClass().getName());
+        assertEquals("Test book", book.getTitle());
     }
 
     @Test void newBookHasPrice () {
         //getPrice should return a float
-        assertEquals(book.getLoanPrice(), 2f);
+        assertEquals(2f, book.getLoanPrice());
     }
 
 
@@ -35,11 +35,11 @@ class AppTest {
         assertTrue(book.getLoaned());
         
         //getLoanedTo should return reference to user that has loaned book
-        assertEquals(book.getLoanedTo(), user1);
+        assertEquals(user1, book.getLoanedTo());
         
         //loaning a book that is already loaned should not change who the book is loaned to
         book.loanTo(user2);
-        assertNotEquals(book.getLoanedTo(), user2);
+        assertNotEquals(user2, book.getLoanedTo());
     }
 
     @Test void bookCanBeReturned () {
@@ -54,12 +54,12 @@ class AppTest {
         book.addRating(user1, (byte) 2);
         book.addRating(user1, (byte) 4);
 
-        assertEquals(book.getScore(), (byte) 3);
+        assertEquals((byte) 3, book.getScore());
 
         User user3 = new User("Test user 3");
         User user4 = new User("Test user 4");
-        book.addRating(user1, (byte) -8);
-        book.addRating(user1, (byte) 50);
+        book.addRating(user3, (byte) -8);
+        book.addRating(user4, (byte) 50);
 
         boolean lessOrEqualTo5 = book.getScore() <= 5;
         boolean moreOrEqualTo0 = book.getScore() >= 0;
@@ -67,7 +67,9 @@ class AppTest {
         assertTrue(lessOrEqualTo5);
         assertTrue(moreOrEqualTo0);
 
-        assertEquals(book.getScore(), (byte) 3);
+        assertEquals((byte) 3, book.getScore());
+        
+        //user can only rate a book once
 
         //removing rating from empty ratings list should throw an exception
 
@@ -76,7 +78,7 @@ class AppTest {
     @Test void bookCanBeCommented () {
         //after adding comment, getComments should return list of comment objects with one comment
         book.addComment(user1, "Test comment1");
-        assertEquals(book.getComments().size(), 1);
+        assertEquals(1,book.getComments().size());
     
         //comment should have a String message and a User 
         String comment = book.getComments().get(0).getMessage();
@@ -88,7 +90,6 @@ class AppTest {
     @Test void userCanLoanBook () {
 
         //user can loan a book in exchange for the loanPrice of the book
-        
         user1.depositDollars(100f);
 
         float dollarsBefore  = user1.getDollars();
@@ -97,17 +98,36 @@ class AppTest {
         user1.loanBook(book);
         float dollarsAfter = user1.getDollars();
         
-        assertEquals(dollarsAfter, expectedDollarsAfter);
+        assertEquals(expectedDollarsAfter, dollarsAfter);
 
         //after loaning a book user.getLoanedBooks should return list of books with one book
-        assertEquals(user1.getLoanedBooks().size(), 1);
+        assertEquals(1, user1.getLoanedBooks().size());
 
     }
 
     @Test void libraryHasBooks () {
         Library library = new Library();
         
+        Book book2 = new Book("Test book 2", 2f);
+        Book book3 = new Book("Test book 2", 2f);
+
+        library.addBook(book);
+        library.addBook(book2);
+        library.addBook(book3);
+    
         //getBooks should return a list of Book objects
-        library.getBooks();
+        assertEquals(3, library.getBooks().size());
     }
+
+    //books can be searched
+
+    //by author
+    
+    //by genre
+
+    //release date
+
+    //by rating
+
+    
 }

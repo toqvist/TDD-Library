@@ -1,9 +1,11 @@
 package library;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Book {
 
+    String uniqueID = UUID.randomUUID().toString();
     private String title;
     
     private float score;
@@ -12,6 +14,8 @@ public class Book {
     private float loanPrice;
     private boolean loaned;
     private User loanedTo;
+
+    
 
     private ArrayList<Comment> comments = new ArrayList<Comment>();
     
@@ -27,6 +31,10 @@ public class Book {
         //Default values
         loaned = false;
 
+    }
+
+    public String getID () {
+        return this.uniqueID;
     }
 
     public String getTitle() {

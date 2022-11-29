@@ -26,7 +26,7 @@ public class User {
         }
     }
 
-    public void withdrawDollars (float amount) {
+    public void spendDollars (float amount) {
         if (amount < 0) {
             amount *= (-1);
         }
@@ -37,7 +37,7 @@ public class User {
         
         if (canLoan(book)) {
 
-            withdrawDollars(book.getLoanPrice());
+            spendDollars(book.getLoanPrice());
             loanedBooks.add(book);
 
         }
@@ -51,6 +51,7 @@ public class User {
         if (book.getLoaned() == false) {
             return true;
         }
+
         return false;
     }
 
