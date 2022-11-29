@@ -10,46 +10,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 class AppTest {
-    
+
     Book book = new Book("Test book", 2.0f);
     User user1 = new User("Test user 1");
     User user2 = new User("Test user 2");
-    
 
-    @Test void newBookHasTitle () {
-        //getTitle should return string equal to given name
+    @Test
+    void newBookHasTitle() {
+        // getTitle should return string equal to given name
         assertEquals("java.lang.String", book.getTitle().getClass().getName());
         assertEquals("Test book", book.getTitle());
     }
 
-    @Test void newBookHasPrice () {
-        //getPrice should return a float
+    @Test
+    void newBookHasPrice() {
+        // getPrice should return a float
         assertEquals(2f, book.getLoanPrice());
     }
 
+    @Test
+    void bookCanBeLoaned() {
 
-    @Test void bookCanBeLoaned () {
-        
-        //after loaning book, getLoaned should return boolean true
+        // after loaning book, getLoaned should return boolean true
         book.loanTo(user1);
         assertTrue(book.getLoaned());
-        
-        //getLoanedTo should return reference to user that has loaned book
+
+        // getLoanedTo should return reference to user that has loaned book
         assertEquals(user1, book.getLoanedTo());
-        
-        //loaning a book that is already loaned should not change who the book is loaned to
+
+        // loaning a book that is already loaned should not change who the book is
+        // loaned to
         book.loanTo(user2);
         assertNotEquals(user2, book.getLoanedTo());
     }
 
-    @Test void bookCanBeReturned () {
-        //after returning book, loaned should return false
+    @Test
+    void bookCanBeReturned() {
+        // after returning book, loaned should return false
         book.returnBook();
         assertFalse(book.getLoaned());
     }
 
-    @Test void bookCanBeRated () {
-        //after adding ratings, getScore should return float >= 0 and <= 5
+    @Test
+    void bookCanBeRated() {
+        // after adding ratings, getScore should return float >= 0 and <= 5
 
         book.addRating(user1, (byte) 2);
         book.addRating(user1, (byte) 4);
@@ -68,66 +72,106 @@ class AppTest {
         assertTrue(moreOrEqualTo0);
 
         assertEquals((byte) 3, book.getScore());
-        
-        //user can only rate a book once
 
-        //removing rating from empty ratings list should throw an exception
+        // user can only rate a book once
+
+        // removing rating from empty ratings list should throw an exception
 
     }
-    
-    @Test void bookCanBeCommented () {
-        //after adding comment, getComments should return list of comment objects with one comment
+
+    @Test
+    void bookCanBeCommented() {
+        // after adding comment, getComments should return list of comment objects with
+        // one comment
         book.addComment(user1, "Test comment1");
-        assertEquals(1,book.getComments().size());
-    
-        //comment should have a String message and a User 
+        assertEquals(1, book.getComments().size());
+
+        // comment should have a String message and a User
         String comment = book.getComments().get(0).getMessage();
         assertEquals(comment.getClass().getName(), "java.lang.String");
-        
-        //removing comment from empty list should throw an exception
+
+        // removing comment from empty list should throw an exception
     }
 
-    @Test void userCanLoanBook () {
+    @Test
+    void userCanLoanBook() {
 
-        //user can loan a book in exchange for the loanPrice of the book
+        // user can loan a book in exchange for the loanPrice of the book
         user1.depositDollars(100f);
 
-        float dollarsBefore  = user1.getDollars();
+        float dollarsBefore = user1.getDollars();
         float expectedDollarsAfter = dollarsBefore - book.getLoanPrice();
 
         user1.loanBook(book);
         float dollarsAfter = user1.getDollars();
-        
+
         assertEquals(expectedDollarsAfter, dollarsAfter);
 
-        //after loaning a book user.getLoanedBooks should return list of books with one book
+        // after loaning a book user.getLoanedBooks should return list of books with one
+        // book
         assertEquals(1, user1.getLoanedBooks().size());
 
     }
 
-    @Test void libraryHasBooks () {
+    @Test
+    void libraryHasBooks() {
         Library library = new Library();
-        
+
         Book book2 = new Book("Test book 2", 2f);
         Book book3 = new Book("Test book 2", 2f);
 
         library.addBook(book);
         library.addBook(book2);
         library.addBook(book3);
-    
-        //getBooks should return a list of Book objects
+
+        // getBooks should return a list of Book objects
         assertEquals(3, library.getBooks().size());
     }
 
-    //books can be searched
+    @Test
+    void booksCanBeSearched() {
 
-    //by author
-    
-    //by genre
+        Library library = new Library();
 
-    //release date
+        Book book2 = new Book("Test book 2: New test redemption", 2f);
+        Book book3 = new Book("Test book 3: The saga continues", 2f);
 
-    //by rating
+        library.addBook(book);
+        library.addBook(book2);
+        library.addBook(book3);
 
-    
+        // books can be searched by title
+        String query = "Test";
+        ArrayList<Book> result = library.search(query);
+        
+        // each book in result should contain sub-string of the query
+        assertEquals(3, result.size());
+        for (Book book : result) {
+            assertTrue(book.getTitle().contains(query));
+        }
+
+        query = "saga";
+        result = library.search(query);
+        assertEquals(1, result.size());
+        for (Book book : result) {
+            assertTrue(book.getTitle().contains(query));
+        }
+
+        query = "99x9x9x";
+        result = library.search(query);
+        assertEquals(0, result.size());
+        for (Book book : result) {
+            assertTrue(book.getTitle().contains(query));
+        }
+
+    }
+
+    // by author
+
+    // by genre
+
+    // release date
+
+    // by rating
+
 }
