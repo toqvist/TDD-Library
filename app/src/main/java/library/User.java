@@ -33,12 +33,26 @@ public class User {
         this.dollarBalance -= amount;
     }
 
+    public void returnBook (Book book) {
+        boolean canReturn = false;
+        for (Book loanedBook : loanedBooks) {
+            if (loanedBook.getID() == book.getID() ) {
+                canReturn = true;
+            }
+        }
+        if(canReturn) {
+            book.returnBook();
+            loanedBooks.remove(book);
+        }
+    }
+
     public void loanBook (Book book) {
         
         if (canLoan(book)) {
 
             spendDollars(book.getLoanPrice());
             loanedBooks.add(book);
+            book.loanTo(this);
 
         }
     }

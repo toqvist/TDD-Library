@@ -10,7 +10,7 @@ public class Comment {
         this.message = message;
     }
 
-    public User getuser() {
+    public User getUser() {
         return this.user;
     }
 

@@ -60,7 +60,6 @@ public class Book {
             this.loaned = true;
             this.loanedTo = user;
         } 
-        
     }
 
     public User getLoanedTo() {

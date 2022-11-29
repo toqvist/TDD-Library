@@ -51,8 +51,13 @@ class AppTest {
     @Test
     void bookCanBeReturned() {
         // after returning book, loaned should return false
-        book.returnBook();
+
+        user1.loanBook(book);
+        assertTrue(book.getLoaned());
+        user1.returnBook(book);
         assertFalse(book.getLoaned());
+        
+        assertEquals(0, user1.getLoanedBooks().size());
     }
 
     @Test

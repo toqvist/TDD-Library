@@ -61,4 +61,12 @@ public class Library {
         return results;
     }
 
+    public Book getBookById (String id) {
+        for (Book book : books) {
+            if (book.getID() == book.getID() ) {
+                return book;
+            }
+        }
+        return null;
+    }
 }
