@@ -6,5 +6,22 @@ package library;
 public class App {
     
     public static void main(String[] args) {
+        Library library = new Library();
+
+        Book book = new Book("Test book","Wright Realgood", 2.0f, "2022-09-27");
+        Book book2 = new Book("Test book 2: New test redemption","Unreal person", 2f, "2022-10-28");
+        Book book3 = new Book("Test book 3: The saga continues", "Unreal person", 2f,  "2022-11-29");
+    
+        library.addBook(book);
+        library.addBook(book2);
+        library.addBook(book3);
+
+
+        library.generalSearch("0");
+
+        System.out.println(book.getScore());
+        System.out.println(Math.round(book.getScore()) == Integer.parseInt("0"));
+        System.out.println(Math.round(book.getScore()) == Float.parseFloat("0"));
+        
     }
 }

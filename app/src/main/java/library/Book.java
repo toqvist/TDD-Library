@@ -7,23 +7,29 @@ public class Book {
 
     String uniqueID = UUID.randomUUID().toString();
     private String title;
-    
-    private float score;
-    private ArrayList<Rating> ratings = new ArrayList<Rating>();
+    private String author;
+    private String releaseDate;
+
+    private ArrayList<String> genres = new ArrayList<String>();
+
     
     private float loanPrice;
     private boolean loaned;
     private User loanedTo;
 
-    
 
     private ArrayList<Comment> comments = new ArrayList<Comment>();
+
+    private float score = 0;
+    private ArrayList<Rating> ratings = new ArrayList<Rating>();
     
 
-    public Book (String title, float loanPrice) {
+    public Book (String title, String author, float loanPrice, String releaseDate) {
         
         this.title = title;
+        this.author = author;
         this.loanPrice = loanPrice;
+        this.releaseDate = releaseDate;
 
         //Rating of 0 shows as "unrated"
         score = 0;
@@ -76,6 +82,10 @@ public class Book {
     }
 
     private float calculateScore () {
+
+        if (ratings.size() == 0) {
+            return 0;
+        }
         
         float calculatedScore = 0;
 
@@ -108,6 +118,24 @@ public class Book {
 
     public ArrayList<Comment> getComments () {
         return this.comments;
+    }
+
+    public String getAuthor() {
+        return this.author;
+    }
+
+    public String getReleaseDate() {
+        return this.releaseDate;
+    }
+
+    public boolean hasGenre(String query) {
+
+        for (String genre : genres) {
+            if (genre.contains(query)) {
+                return true;   
+            }
+        }
+        return false;
     }
 
 }

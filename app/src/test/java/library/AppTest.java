@@ -11,9 +11,14 @@ import java.util.List;
 
 class AppTest {
 
-    Book book = new Book("Test book", 2.0f);
+    Book book = new Book("Test book","Wright Realgood", 2.0f, "2022-09-27");
+    Book book2 = new Book("Test book 2: New test redemption","Unreal person", 2f, "2022-10-28");
+    Book book3 = new Book("Test book 3: The saga continues", "Unreal person", 2f,  "2022-11-29");
+
     User user1 = new User("Test user 1");
     User user2 = new User("Test user 2");
+
+    Library library = new Library();
 
     @Test
     void newBookHasTitle() {
@@ -117,9 +122,6 @@ class AppTest {
     void libraryHasBooks() {
         Library library = new Library();
 
-        Book book2 = new Book("Test book 2", 2f);
-        Book book3 = new Book("Test book 2", 2f);
-
         library.addBook(book);
         library.addBook(book2);
         library.addBook(book3);
@@ -131,18 +133,13 @@ class AppTest {
     @Test
     void booksCanBeSearched() {
 
-        Library library = new Library();
-
-        Book book2 = new Book("Test book 2: New test redemption", 2f);
-        Book book3 = new Book("Test book 3: The saga continues", 2f);
-
         library.addBook(book);
         library.addBook(book2);
         library.addBook(book3);
 
         // books can be searched by title
         String query = "Test";
-        ArrayList<Book> result = library.search(query);
+        ArrayList<Book> result = library.generalSearch(query);
         
         // each book in result should contain sub-string of the query
         assertEquals(3, result.size());
@@ -151,27 +148,86 @@ class AppTest {
         }
 
         query = "saga";
-        result = library.search(query);
+        result = library.generalSearch(query);
         assertEquals(1, result.size());
         for (Book book : result) {
             assertTrue(book.getTitle().contains(query));
         }
 
         query = "99x9x9x";
-        result = library.search(query);
+        result = library.generalSearch(query);
         assertEquals(0, result.size());
         for (Book book : result) {
             assertTrue(book.getTitle().contains(query));
         }
 
+        
+
     }
 
-    // by author
+    @Test void canSearchByAuthor() {
+
+        library.addBook(book);
+        library.addBook(book2);
+        library.addBook(book3);
+
+        String query = "Wright";
+        ArrayList<Book> result = library.generalSearch(query);
+        assertEquals(1, result.size());
+        for (Book book : result) {
+            assertTrue(book.getAuthor().contains(query));
+        }
+
+    }
+
+    @Test void canSearchByReleaseDate () {
+
+        library.addBook(book);
+        library.addBook(book2);
+        library.addBook(book3);
+
+        String query = "2022";
+        ArrayList<Book> result = library.generalSearch(query);
+        assertEquals(3, result.size());
+        for (Book book : result) {
+            assertTrue(book.getReleaseDate().contains(query));
+        }
+
+        query = "29";
+        result = library.generalSearch(query);
+        assertEquals(1, result.size());
+        for (Book book : result) {
+            assertTrue(book.getReleaseDate().contains(query));
+        }  
+    }
+
+    @Test void canSearchByScore () {
+
+        library.addBook(book);
+        library.addBook(book2);
+        library.addBook(book3);
+
+        book.addRating(user1, (byte) 5);
+
+        //searching by score should books with a score > than the query 
+        //but smaller than the next whole number
+
+        String query = "5";
+        ArrayList<Book> result = library.generalSearch(query);
+        assertEquals(1, result.size());
+        for (Book book : result) {
+            assertEquals(Byte.parseByte(query), book.getScore());
+        
+        }
+
+        query = "0";
+        result = library.generalSearch(query);
+        assertEquals(2, result.size());
+        for (Book book : result) {
+            assertEquals(Byte.parseByte(query), book.getScore());
+        }  
+    }
 
     // by genre
-
-    // release date
-
-    // by rating
 
 }

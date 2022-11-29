@@ -10,23 +10,47 @@ public class Library {
         return books;
     }
 
-    public void addBook (Book book) {
+    public void addBook(Book book) {
         books.add(book);
     }
 
-    public ArrayList<Book> search (String query) {
-        
-        ArrayList<Book> results = new ArrayList<>();
+    // Searches by all criteria at once
+    public ArrayList<Book> generalSearch(String query) {
+
+        ArrayList<Book> results = new ArrayList<Book>();
 
         for (Book book : books) {
-            System.out.println(book.getTitle());
-            if(book.getTitle().contains(query)) {
-                results.add(book);
-                System.out.println("added : " + book.getTitle());
+
+            boolean genreMatch = false;
+
+            boolean titleMatch = book.getTitle().contains(query);
+            boolean authorMatch = book.getAuthor().contains(query);
+            
+            
+            boolean releaseDateMatch = false;
+            if (query.chars().count() >= 2 ) {
+                releaseDateMatch = book.getReleaseDate().contains(query);
+            }
+            // boolean genreMatch = book.hasGenre(query);
+
+            boolean scoreMatch = false;            
+            try {
+
+                if (Math.round(book.getScore()) == Integer.parseInt(query)) {
+                    scoreMatch = true;
+                }
+                
+            } catch (Exception e) {
             }
 
+            if (titleMatch || authorMatch || genreMatch ||
+                    releaseDateMatch || scoreMatch) {
+
+                results.add(book);
+
+            }
         }
-        
+
         return results;
     }
 
