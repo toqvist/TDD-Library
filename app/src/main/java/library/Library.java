@@ -21,17 +21,15 @@ public class Library {
 
         for (Book book : books) {
 
-            boolean genreMatch = false;
-
             boolean titleMatch = book.getTitle().contains(query);
             boolean authorMatch = book.getAuthor().contains(query);
-            
+            boolean genreMatch = book.hasGenre(query);
             
             boolean releaseDateMatch = false;
             if (query.chars().count() >= 2 ) {
                 releaseDateMatch = book.getReleaseDate().contains(query);
             }
-            // boolean genreMatch = book.hasGenre(query);
+            
 
             boolean scoreMatch = false;            
             try {

@@ -229,5 +229,46 @@ class AppTest {
     }
 
     // by genre
+    @Test void canSearchByGenre () {
 
+        library.addBook(book);
+        library.addBook(book2);
+        library.addBook(book3);
+
+        book.addGenre("thriller");
+        book2.addGenre("adventure");
+        book3.addGenre("fantasy");
+        book3.addGenre("adventure");
+
+        String query = "thriller";
+        ArrayList<Book> result = library.generalSearch(query);
+        assertEquals(1, result.size());
+
+        boolean containsQuery = false;
+
+        for (Book book : result) {
+            for (String genre : book.getGenres()) {
+                if(genre.contains(query)) {
+                    containsQuery = true;
+                }
+            }
+            assertTrue(containsQuery);            
+        }
+
+        query = "adventure";
+        result = library.generalSearch(query);
+        assertEquals(2, result.size());
+
+        containsQuery = false;
+
+        for (Book book : result) {
+            for (String genre : book.getGenres()) {
+                if(genre.contains(query)) {
+                    containsQuery = true;
+                }
+            }
+            assertTrue(containsQuery);            
+        }
+
+    }
 }

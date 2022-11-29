@@ -128,6 +128,21 @@ public class Book {
         return this.releaseDate;
     }
 
+    public ArrayList<String> getGenres() {
+        return this.genres;
+    }
+
+    public void addGenre (String genreToAdd) {
+        
+        for (String genre : genres) {
+            if (genre.equals(genreToAdd)) {
+                return;   
+            }
+        }
+
+        genres.add(genreToAdd);
+    }
+
     public boolean hasGenre(String query) {
 
         for (String genre : genres) {
