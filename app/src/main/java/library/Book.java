@@ -12,6 +12,8 @@ public class Book {
     private float loanPrice;
     private boolean loaned;
     private User loanedTo;
+
+    private ArrayList<Comment> comments = new ArrayList<Comment>();
     
 
     public Book (String title, float loanPrice) {
@@ -29,6 +31,10 @@ public class Book {
 
     public String getTitle() {
         return this.title;
+    }
+
+    public float getLoanPrice () {
+        return this.loanPrice;
     }
 
     public boolean getLoaned () {
@@ -85,6 +91,15 @@ public class Book {
 
         Rating rating = new Rating(user, score);
         ratings.add(rating);
+    }
+
+    public void addComment (User user, String message) {
+        Comment newComment = new Comment(user, message);
+        comments.add(newComment);
+    }
+
+    public ArrayList<Comment> getComments () {
+        return this.comments;
     }
 
 }

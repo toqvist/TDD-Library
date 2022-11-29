@@ -22,6 +22,12 @@ class AppTest {
         assertEquals(book.getTitle(), "Test book");
     }
 
+    @Test void newBookHasPrice () {
+        //getPrice should return a float
+        assertEquals(book.getLoanPrice(), 20f);
+    }
+
+
     @Test void bookCanBeLoaned () {
         
         //after loaning book, getLoaned should return boolean true
@@ -63,16 +69,22 @@ class AppTest {
 
         assertEquals(book.getScore(), (byte) 3);
 
+        //removing rating from empty ratings list should throw an exception
+
     }
     
+    @Test void bookCanBeCommented () {
+        //after adding comment, getComments should return list of comment objects with one comment
+        book.addComment(user1, "Test comment1");
+        assertEquals(book.getComments().size(), 1);
     
-
-    //after adding comment, getComments should return list of comment objects with one comment
-
-    //removing comment from empty list should throw an exception
-
-    //after setting a loanPrice, getPrice should return a float
+        //comment should have a String message and a User 
+        String comment = book.getComments().get(0).getMessage();
+        assertEquals(comment.getClass().getName(), "java.lang.String");
         
+        //removing comment from empty list should throw an exception
+    }
+
     @Test void libraryHasBooks () {
         Library library = new Library();
         
