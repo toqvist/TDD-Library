@@ -3,25 +3,164 @@
  */
 package library;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class App {
     
+    String activeUser;
+
     public static void main(String[] args) {
         Library library = new Library();
+        addSampleBooksAndObjects(library);
 
-        Book book = new Book("Test book","Wright Realgood", 2.0f, "2022-09-27");
-        Book book2 = new Book("Test book 2: New test redemption","Unreal person", 2f, "2022-10-28");
-        Book book3 = new Book("Test book 3: The saga continues", "Unreal person", 2f,  "2022-11-29");
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Please enter your name");
+        String name = scanner.next();
+
+        User activeUser = new User(name);
+        activeUser.depositDollars(50f);
+
+        boolean interfaceOpen = true;
+        String openMenu = "main";
+        String menuChoice = "";
+        Book selectedBook;
+        
+        System.out.println("Hello " + activeUser + "Welcome to the library!");
+        System.out.println("You've been given $50, spend it wisely!");
+
+        while (interfaceOpen) {
+            System.out.println("Balance: $" + activeUser.getDollarBalance());
+
+            switch (openMenu) {
+                case "main":
+                    printMainMenu();
+                    menuChoice = scanner.next();
+                    break;
+                case "select book":
+                    System.out.println("Enter book id to select: ");
+                    String id = scanner.next();
+                    selectedBook = libraryGetBookById();
+                    openMenu = "book selected";
+                    break;
+                case "search":
+                    System.out.println("Enter query: ");
+                    String query = scanner.next();
+                    library.generalSearch(menuChoice);
+                    
+                    System.out.println("Enter a key to continue");
+                    scanner.next();
+                    openMenu = "main";
+                    break;
+                case "all books":
+                    printBooks(library.getBooks());
+                    
+                    System.out.println("Enter a key to continue");
+                    scanner.next();
+                    openMenu = "main";
+                    break;
+                case "selected book":
+                    printSelectedBookOptions();
+                    String bookOption = scanner.next();
+                    
+                    switch(bookOption) {
+                        case "0":
+                            openMenu = "main";
+                        case "1":
+                            activeUser.loanBook(selectedBook);
+                            break;
+                        case "2":
+                            activeUser.returnBook(selectedBook);
+                            break;
+                        case "3":
+                            System.out.println("Enter comment text: ");
+                            String message = scanner.next();
+                            selectedBook.addComment(activeUser, message);
+                            break;
+                        case "4":
+                            System.out.println("Leave a rating between 1 and 5");
+                            byte score = scanner.nextByte();
+                            selectedBook.addRating(activeUser, score);
+                            break;
+                        
+                    }
+                    
+                    break;
+            }
+
+            switch (menuChoice) {
+                case "0":
+                    interfaceOpen = false;
+                    break;
+                case "1":
+                    openMenu = "select book";
+                    break;
+                case "2":
+                    openMenu ="search";
+                    break;
+                case "3":
+                    openMenu = "all books";
+                    break;
+                default:
+                break;   
+            }
+
+        }
+        scanner.close();
+    }
+
+    private static void addSampleBooksAndObjects (Library library) {
+        Book book1 = new Book("Test book","Wright Realgood", 2.0f, "2022-09-27");
+        Book book2 = new Book("Test book 2: New test redemption","Wright Realgood", 2f, "2022-10-28");
+        Book book3 = new Book("Attack of the tests", "Seamus Famous", 3.0f,  "2022-11-29");
+
+        User user1 = new User("User One");
+        User user2 = new User("User two");
     
-        library.addBook(book);
+        book1.addGenre("adventure");
+        book2.addGenre("western");
+        book3.addGenre("thriller");
+        book3.addGenre("sci-fi");
+
+        book1.addRating(user1, (byte) 4);
+        book1.addRating(user2, (byte) 3);
+        book2.addRating(user1, (byte) 5);
+        book2.addRating(user2, (byte) 5);
+        book3.addRating(user2, (byte) 1);
+
+        book1.addComment(user1, "A thrilling read!");
+        book2.addComment(user1, "Wright does it again, amazing!");
+        book3.addComment(user2, "I don't think I've ever been more bored reading");
+        
+        library.addBook(book1);
         library.addBook(book2);
         library.addBook(book3);
 
-
-        library.generalSearch("0");
-
-        System.out.println(book.getScore());
-        System.out.println(Math.round(book.getScore()) == Integer.parseInt("0"));
-        System.out.println(Math.round(book.getScore()) == Float.parseFloat("0"));
-        
+        library.addUser(user1);
+        library.addUser(user2);
     }
+
+
+    private static void printBooks (ArrayList<Book> books) {
+        for (Book book : books) {
+            System.out.println(book.getTitle() + " by " + book.getAuthor() + "--ID: " + book.getID());
+        }
+    }
+
+    private static void printMainMenu () {
+            System.out.println("[0] - Exit application");
+            System.out.println("[1] - Select a book");
+            System.out.println("[2] - Search for a book ");
+            System.out.println("[3] - See all books");
+    }
+
+    private static void printSelectedBookOptions () {
+        System.out.println("[0] - Back");
+        System.out.println("[1] - Loan book");
+        System.out.println("[2] - Return book");
+        System.out.println("[3] - Leave a comment");
+        System.out.println("[4] - Leave a rating");   
+    }
+
 }

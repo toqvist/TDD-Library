@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 class AppTest {
 
@@ -160,8 +159,6 @@ class AppTest {
         for (Book book : result) {
             assertTrue(book.getTitle().contains(query));
         }
-
-        
 
     }
 

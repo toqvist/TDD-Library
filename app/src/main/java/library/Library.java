@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Library {
 
     private ArrayList<Book> books = new ArrayList<Book>();
+    private ArrayList<User> users = new ArrayList<User>();
 
     public ArrayList<Book> getBooks() {
         return books;
@@ -12,6 +13,14 @@ public class Library {
 
     public void addBook(Book book) {
         books.add(book);
+    }
+    
+    public void addUser (User user) {
+        users.add(user);
+    }
+
+    public ArrayList<User> getUsers () {
+        return this.users;
     }
 
     // Searches by all criteria at once

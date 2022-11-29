@@ -55,6 +55,10 @@ public class User {
         return false;
     }
 
+    public float getDollarBalance () {
+        return this.dollarBalance;
+    }
+
     public ArrayList<Book> getLoanedBooks () {
         return this.loanedBooks;
     }
