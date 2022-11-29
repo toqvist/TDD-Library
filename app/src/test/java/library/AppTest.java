@@ -11,7 +11,7 @@ import java.util.List;
 
 class AppTest {
     
-    Book book = new Book("Test book", 20.0f);
+    Book book = new Book("Test book", 2.0f);
     User user1 = new User("Test user 1");
     User user2 = new User("Test user 2");
     
@@ -24,7 +24,7 @@ class AppTest {
 
     @Test void newBookHasPrice () {
         //getPrice should return a float
-        assertEquals(book.getLoanPrice(), 20f);
+        assertEquals(book.getLoanPrice(), 2f);
     }
 
 
@@ -83,6 +83,25 @@ class AppTest {
         assertEquals(comment.getClass().getName(), "java.lang.String");
         
         //removing comment from empty list should throw an exception
+    }
+
+    @Test void userCanLoanBook () {
+
+        //user can loan a book in exchange for the loanPrice of the book
+        
+        user1.depositDollars(100f);
+
+        float dollarsBefore  = user1.getDollars();
+        float expectedDollarsAfter = dollarsBefore - book.getLoanPrice();
+
+        user1.loanBook(book);
+        float dollarsAfter = user1.getDollars();
+        
+        assertEquals(dollarsAfter, expectedDollarsAfter);
+
+        //after loaning a book user.getLoanedBooks should return list of books with one book
+        assertEquals(user1.getLoanedBooks().size(), 1);
+
     }
 
     @Test void libraryHasBooks () {
