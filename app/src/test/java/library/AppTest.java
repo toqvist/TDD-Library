@@ -11,8 +11,8 @@ import java.util.List;
 
 class AppTest {
     
-    Book book = new Book("Test book");
-    User user = new User("Test user 1");
+    Book book = new Book("Test book", 20.0f);
+    User user1 = new User("Test user 1");
     User user2 = new User("Test user 2");
     
 
@@ -25,39 +25,58 @@ class AppTest {
     @Test void bookCanBeLoaned () {
         
         //after loaning book, getLoaned should return boolean true
-        book.loanTo(user);
+        book.loanTo(user1);
         assertTrue(book.getLoaned());
         
         //getLoanedTo should return reference to user that has loaned book
-        assertEquals(book.getLoanedTo(), user);
+        assertEquals(book.getLoanedTo(), user1);
         
-
         //loaning a book that is already loaned should not change who the book is loaned to
         book.loanTo(user2);
         assertNotEquals(book.getLoanedTo(), user2);
-        
     }
 
     @Test void bookCanBeReturned () {
-        //after returning book, loaned returns false
+        //after returning book, loaned should return false
         book.returnBook();
         assertFalse(book.getLoaned());
-
     }
 
+    @Test void bookCanBeRated () {
+        //after adding ratings, getScore should return float >= 0 and <= 5
+
+        book.addRating(user1, (byte) 2);
+        book.addRating(user1, (byte) 4);
+
+        assertEquals(book.getScore(), (byte) 3);
+
+        User user3 = new User("Test user 3");
+        User user4 = new User("Test user 4");
+        book.addRating(user1, (byte) -8);
+        book.addRating(user1, (byte) 50);
+
+        boolean lessOrEqualTo5 = book.getScore() <= 5;
+        boolean moreOrEqualTo0 = book.getScore() >= 0;
+
+        assertTrue(lessOrEqualTo5);
+        assertTrue(moreOrEqualTo0);
+
+        assertEquals(book.getScore(), (byte) 3);
+
+    }
+    
+    
+
+    //after adding comment, getComments should return list of comment objects with one comment
+
+    //removing comment from empty list should throw an exception
+
+    //after setting a loanPrice, getPrice should return a float
+        
     @Test void libraryHasBooks () {
         Library library = new Library();
         
         //getBooks should return a list of Book objects
         library.getBooks();
     }
-
-    //after setting rating, getRating should return float >= 0 and <= 5
-
-    //after adding comment, getComments should retun list of comment objects with one comment
-
-    //removing comment from empty list should throw an exception
-
-    //after setting a loanPrice, getPrice should return a float
-        
 }
