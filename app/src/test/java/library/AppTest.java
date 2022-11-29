@@ -6,9 +6,58 @@ package library;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+    
+    Book book = new Book("Test book");
+    User user = new User("Test user 1");
+    User user2 = new User("Test user 2");
+    
+
+    @Test void newBookHasTitle () {
+        //getTitle should return string equal to given name
+        assertEquals(book.getTitle().getClass().getName(), "java.lang.String");
+        assertEquals(book.getTitle(), "Test book");
     }
+
+    @Test void bookCanBeLoaned () {
+        
+        //after loaning book, getLoaned should return boolean true
+        book.loanTo(user);
+        assertTrue(book.getLoaned());
+        
+        //getLoanedTo should return reference to user that has loaned book
+        assertEquals(book.getLoanedTo(), user);
+        
+
+        //loaning a book that is already loaned should not change who the book is loaned to
+        book.loanTo(user2);
+        assertNotEquals(book.getLoanedTo(), user2);
+        
+    }
+
+    @Test void bookCanBeReturned () {
+        //after returning book, loaned returns false
+        book.returnBook();
+        assertFalse(book.getLoaned());
+
+    }
+
+    @Test void libraryHasBooks () {
+        Library library = new Library();
+        
+        //getBooks should return a list of Book objects
+        library.getBooks();
+    }
+
+    //after setting rating, getRating should return float >= 0 and <= 5
+
+    //after adding comment, getComments should retun list of comment objects with one comment
+
+    //removing comment from empty list should throw an exception
+
+    //after setting a loanPrice, getPrice should return a float
+        
 }
