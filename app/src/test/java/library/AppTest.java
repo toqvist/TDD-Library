@@ -3,10 +3,16 @@
  */
 package library;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+
+import org.junit.jupiter.api.Test;
 
 class AppTest {
 
@@ -211,7 +217,7 @@ class AppTest {
 
         book.addRating(user1, (byte) 5);
 
-        //searching by score should books with a score > than the query 
+        //searching by score should return books with a score > than the query 
         //but smaller than the next whole number
 
         String query = "5";
@@ -271,6 +277,34 @@ class AppTest {
             }
             assertTrue(containsQuery);            
         }
+    }
 
+    @Test void libraryCanReceiveBooksFromDb () {
+
+        DataBase mockDb = mock(DataBase.class);
+        ArrayList<Book> mockBooks= new ArrayList<Book>();
+        mockBooks.add(book);
+        mockBooks.add(book2);
+        mockBooks.add(book3);
+
+        when(mockDb.getBooks()).thenReturn(mockBooks);
+        
+        
+        ArrayList<Book> booksFromDb = mockDb.getBooks();
+        
+        assertEquals(0, library.getBooks().size());
+        library.addBooks(booksFromDb);
+        assertEquals(3, library.getBooks().size());
+
+        //library's list of books should contain all books from the database
+        for (Book book : library.getBooks()) {
+            boolean match = false;
+            for(Book bookInDb : booksFromDb) {
+                if (bookInDb.getTitle().equals(book.getTitle())) {
+                    match = true;
+                }
+            }
+            assertTrue(match);
+        }
     }
 }

@@ -69,4 +69,13 @@ public class Library {
         }
         return null;
     }
+
+    public void addBooks (ArrayList<Book> booksToAdd) {
+        
+        for (Book bookToAdd : booksToAdd) {
+            
+            this.books.add(bookToAdd);
+        }
+
+    }
 }
